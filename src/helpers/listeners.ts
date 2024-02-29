@@ -47,10 +47,14 @@ const registerMasterChef = async () => {
     const masterchefContractAddress = process.env.MASTERCHEF_CONTRACT_ADDRESS as string;
     const masterchefContract = new ethers.Contract(masterchefContractAddress, MasterchefABI, provider);
     masterchefContract.on("Harvest", async (sender: string, to: string, pid: BigInt, tokenId: BigInt, token: string, reward: BigInt) => {
-        const wfuseBalance = await getERC20Balance(WFUSE_ADDRESS, masterchefContractAddress, process.env.WEB3_PROVIDER as string, 18);
-        if (parseFloat(wfuseBalance) < parseFloat(process.env.WFUSE_MIN_LIQUIDITY as string)) {
-            console.log("WFUSE balance is low, sending alert");
-            sendLowLiquidityAlert("WFUSE", parseFloat(wfuseBalance), `${process.env.EXPLORER_URL}/address/${masterchefContractAddress}`, "MasterChef");
+        try {
+            const wfuseBalance = await getERC20Balance(WFUSE_ADDRESS, masterchefContractAddress, process.env.WEB3_PROVIDER as string, 18);
+            if (parseFloat(wfuseBalance) < parseFloat(process.env.WFUSE_MIN_LIQUIDITY as string)) {
+                console.log("WFUSE balance is low, sending alert");
+                sendLowLiquidityAlert("WFUSE", parseFloat(wfuseBalance), `${process.env.EXPLORER_URL}/address/${masterchefContractAddress}`, "MasterChef");
+            }
+        } catch (e) {
+            console.log("Error in Harvest event:", e);
         }
     })
 }
