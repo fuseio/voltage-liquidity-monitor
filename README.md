@@ -1,6 +1,5 @@
-# Bridge Fuse Funder
+# Voltage Liquidity Monitor
 
-Funds FUSE token to first time bridge users
 ## Getting Started
 
 1. Copy example env file:
