@@ -39,6 +39,7 @@ const registerPegswap = async () => {
             }
         } catch (e) {
             console.log("Error in TokensSwapped event:", e);
+            process.exit(1);
         }
     });
 }
@@ -55,6 +56,7 @@ const registerMasterChef = async () => {
             }
         } catch (e) {
             console.log("Error in Harvest event:", e);
+            process.exit(1);
         }
     })
 }
